@@ -36,7 +36,8 @@ test('Parse SQL Query with WHERE Clause', () => {
     expect(parsed).toEqual({
         fields: ['id', 'name'],
         table: 'sample',
-        whereClause: 'age = 25'
+        whereClause: 'age = 25',
+        
     });
 });
 
