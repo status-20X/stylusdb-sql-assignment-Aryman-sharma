@@ -2,13 +2,9 @@ const fs = require('fs');
 const csv = require('csv-parser');
 
 function readCSV(filePath) {
-    return new Promise((resolve, reject) => {
-        if (!fs.existsSync(filePath)) {
-            reject(new Error(`File '${filePath}' does not exist.`));
-            return;
-        }
+    const results = [];
 
-        const results = [];
+    return new Promise((resolve, reject) => {
         fs.createReadStream(filePath)
             .pipe(csv())
             .on('data', (data) => results.push(data))
