@@ -1,14 +1,15 @@
 const readCSV = require('../../src/csvReader');
-const parseQuery = require('../../src/queryParser');
+const {parseQuery} = require('../../src/queryParser');
 const executeSELECTQuery = require('../../src/index');
 
 test('Read CSV File', async () => {
     const data = await readCSV('./student.csv');
     expect(data.length).toBeGreaterThan(0);
+    expect(data.length).toBe(5); // Update this to match the actual length
     expect(data[0].name).toBe('John');
-    expect(data[0].age).toBe('30'); // Ignore the string type here, we will fix this later
-    // Add more assertions for other properties if needed
+    expect(data[0].age).toBe('30'); //ignore the string type here, we will fix this later
 });
+
 
 test('Parse SQL Query', () => {
     const query = 'SELECT id, name FROM student';
@@ -16,11 +17,16 @@ test('Parse SQL Query', () => {
     expect(parsed).toEqual({
         fields: ['id', 'name'],
         table: 'student',
-        whereClauses: [], // Update this property name as needed
+        whereClauses: [], // Update this property name
         joinTable: null, // Add this property
-        joinCondition: null // Add this property
+        joinCondition: null,// Add this property,
+        groupByFields: null,
+        hasAggregateWithoutGroupBy: false,
+        isDistinct: false,
+        joinType: null,
+           limit: null,
+           orderByFields: null,
     });
-    // Add more assertions for the structure if needed
 });
 
 test('Execute SQL Query', async () => {
@@ -31,5 +37,4 @@ test('Execute SQL Query', async () => {
     expect(result[0]).toHaveProperty('name');
     expect(result[0]).not.toHaveProperty('age');
     expect(result[0]).toEqual({ id: '1', name: 'John' });
-    // Add more assertions for other properties if needed
 });
